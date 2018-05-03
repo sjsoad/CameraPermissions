@@ -10,13 +10,7 @@ import UIKit
 import AVFoundation
 import SKServicePermissions
 
-open class CameraPermissions: NSObject {
-    
-}
-
-// MARK: - ServicePermissions -
-
-extension CameraPermissions: ServicePermissions {
+open class CameraPermissions: NSObject, ServicePermissions {
     
     public typealias PermissionsState = AVAuthorizationStatus
     
