@@ -16,8 +16,10 @@ open class CameraPermissions: NSObject, ServicePermissions {
     
     public func requestPermissions(handler: @escaping (PermissionsState) -> Void) {
         AVCaptureDevice.requestAccess(for: .video) { [weak self] _ in
-            guard let strongSelf = self else { return }
-            handler(strongSelf.permissionsState())
+            guard let `self` = self else { return }
+            DispatchQueue.main.async {
+                handler(self.permissionsState())
+            }
         }
     }
     
