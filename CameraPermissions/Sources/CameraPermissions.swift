@@ -8,16 +8,23 @@
 
 import UIKit
 import AVFoundation
-import SKServicePermissions
 
-open class CameraPermissions: NSObject, ServicePermissions {
+public protocol CameraPermissions {
     
-    public typealias PermissionsState = AVAuthorizationStatus
+    typealias PermissionsState = AVAuthorizationStatus
+    
+    func requestPermissions(handler: @escaping (PermissionsState) -> Void)
+    func permissionsState() -> PermissionsState
+}
+
+open class DefaultCameraPermissions: CameraPermissions {
+    
+    public init() {}
     
     public func requestPermissions(handler: @escaping (PermissionsState) -> Void) {
-        AVCaptureDevice.requestAccess(for: .video) { [weak self] _ in
-            guard let `self` = self else { return }
-            DispatchQueue.main.async {
+        AVCaptureDevice.requestAccess(for: .video) { _ in
+            DispatchQueue.main.async { [weak self] in
+                guard let `self` = self else { return }
                 handler(self.permissionsState())
             }
         }
